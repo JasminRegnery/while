@@ -1,0 +1,75 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Berechnung vom Schlüssel K nach Diffie-Hellman</title>
+
+    <script type="text/javascript">
+      "use strict";
+
+      function fDiffieHellman() {
+        var vAusgabe = "";
+        var vg;
+        var vp;
+        var va; //Geheime Zahl von Alice
+        var vb; //Geheime Zahl von Bob
+        var vA; //Öffentlicher Schlüssel von Alice
+        var vB; //Öffentlicher Schlüssel von Bob
+        var vKAlice;
+        var vKBob;
+
+        vg = document.getElementById("idg").value;
+        vp = document.getElementById("idp").value;
+        va = document.getElementById("ida").value;
+        vb = document.getElementById("idb").value;
+
+        if (vp > 99) {
+          vAusgabe = vAusgabe + "p muss kleiner 100 sein!";
+        } else {
+          vA = Math.pow(vg, va) % vp;
+          vB = Math.pow(vg, vb) % vp;
+          vKAlice = Math.pow(vB, va) % vp;
+          vKBob = Math.pow(vA, vb) % vp;
+
+          vAusgabe = vAusgabe + "Öffentlicher Schlüssel Alice:" + vA;
+          vAusgabe = vAusgabe + "</br>Öffentlicher Schlüssel Bob:" + vB;
+          vAusgabe = vAusgabe + "</br>----------------------------------";
+          vAusgabe =
+            vAusgabe + "</br>Generierter Schlüssel K Alice: " + vKAlice;
+          vAusgabe =
+            vAusgabe + "</br>Generierter Schlüssel K Bob: " + vKBob + "</br>";
+
+          vAusgabe = vAusgabe + "</br>" + "<table border=1>";
+          vAusgabe =
+            vAusgabe + "<tr><th>a</th><th>A=g<sup>a</sup> mod p</th></tr>";
+
+          va = 0;
+
+          while (va <= 30) {
+            vA = Math.pow(vg, va) % vp;
+            vAusgabe =
+              vAusgabe + "<tr><td>" + va + "</td><td>" + vA + "</td></tr>";
+            va = va + 1;
+          }
+          vAusgabe = vAusgabe + "</table>";
+        }
+
+        document.getElementById("idAusgabe").innerHTML = vAusgabe;
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Berechnung vom Schlüssel K nach Diffie-Hellman</h1>
+    1. Alice und Bob einigen sich auf: <br />
+    g = <input id="idg" type="text" value="2" /><br />
+    p = <input id="idp" type="text" value="13" /><br /><br />
+    --------------------------------------------------<br /><br />
+    2. Alice wähhlt die geheime Zahl a:<br />
+    a = <input id="ida" type="text" value="5" /><br />
+    3. Bob wählt die geheime Zahl b:<br />
+    b = <input id="idb" type="text" value="8" /><br /><br />
+
+    <button onclick="fDiffieHellman();">Berechne Schlüssel K!</button>
+    <br /><br />
+    <div id="idAusgabe"></div>
+  </body>
+</html>
